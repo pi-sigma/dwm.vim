@@ -1,4 +1,4 @@
-"==============================================================================
+ "==============================================================================
 "    Copyright: Copyright (C) 2012 Stanislas Polu an other Contributors
 "               Permission is hereby granted to use and distribute this code,
 "               with or without modifications, provided that this copyright
@@ -93,31 +93,6 @@ function! DWM_Focus()
   call DWM_ResizeMasterPaneWidth()
 endfunction
 
-" Handler for BufWinEnter autocommand
-" Recreate layout broken by new window
-function! DWM_AutoEnter()
-  if winnr('$') == 1
-    return
-  endif
-
-  " Skip buffers without filetype
-  if !len(&l:filetype)
-    return
-  endif
-
-  " Skip quickfix buffers
-  if &l:buftype == 'quickfix'
-    return
-  endif
-
-  " Move new window to stack top
-  wincmd K
-
-  " Focus new window (twice :)
-  call DWM_Focus()
-  call DWM_Focus()
-endfunction
-
 " Close the current window
 function! DWM_Close()
   if winnr() == 1
@@ -169,6 +144,11 @@ function! DWM_ShrinkMaster()
 endfunction
 
 function! DWM_Rotate(clockwise)
+  " Check no-compatible
+  if exists('g:dwm_no_compatible') && g:dwm_no_compatible == 1
+    return
+  endif
+
   call DWM_Stack(a:clockwise)
   if a:clockwise
     wincmd W
@@ -226,6 +206,6 @@ endif
 if has('autocmd')
   augroup dwm
     au!
-    au BufWinEnter * if &l:buflisted || &l:filetype == 'help' | call DWM_AutoEnter() | endif
+    au BufWinEnter * if &l:buflisted || &l:filetype == 'help' | endif
   augroup end
 endif
