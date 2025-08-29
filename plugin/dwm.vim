@@ -191,8 +191,7 @@ if g:dwm_map_keys
       nmap <C-C> <Plug>DWMClose
   endif
   if !hasmapto('<Plug>DWMFocus')
-      nmap <C-@> <Plug>DWMFocus
-      nmap <C-Space> <Plug>DWMFocus
+      nmap <C-2> <Plug>DWMFocus
   endif
 
   if !hasmapto('<Plug>DWMGrowMaster')
